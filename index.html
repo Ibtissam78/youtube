@@ -1,0 +1,236 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>YouTube-video</title>
+</head>
+<body>
+    <header>
+        <h1>YouTube-video</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Video</a></li>
+                <li><a href="#">Histoirique</a></li>
+                <li><a href="#">Bibliotéque</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="video-list">
+            <!-- Voici un exemple de vidéo -->
+            <div class="video">
+                <img src="jeune-femme-profitant-brise-ocean_23-2148943464.avif" alt="Free woman">
+                <h2>Free woman</h2>
+                <button class="btnPlay">Play</button>
+            </div>
+            
+            <!-- Ajoutez d'autres vidéos ici -->
+            <div class="video">
+                <img src="Animaux.jpg" alt="Animaux Drôles">
+                <h2>Animaux Drôles</h2>
+                <button class="btnPlay">Play</button>
+
+            </div>
+        </div>
+
+        <div class="video-player hidden">
+            <video>https://github.com/nom_utilisateur/exo3
+                <source src="Femme.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="btnClose">Close</button>
+            <!-- Bouton pour basculer en mode plein écran -->
+            <button class="fullscreen-button">Toggle Fullscreen</button>
+            <button class="btnPlay">Play</button>
+            <button class="btnPause">Pause</button>
+        </div>
+    </main>
+
+    <script>
+
+        // Création du bouton Play
+let btnplay = document.createElement("btnPlay");
+btnPlay.textContent = "btnPlay";
+btnPlay.classList.add("btnPlay"); // Ajoutez la classe "pause-button"
+
+// Ajoutez un gestionnaire d'événement pour le bouton Play
+btnPlay.addEventListener('click', function() {
+    videoPlayer.btnplay();
+});
+
+
+// Ajoutez le bouton Play au corps du document
+document.body.appendChild(btnPlay);
+
+// Création du bouton Pause
+let btnPause = document.createElement("btnPause");
+btnPause.textContent = "btnPause";
+btnPause.classList.add("btnPause"); // Ajoutez la classe "pause-button"
+
+// Ajoutez un gestionnaire d'événement pour le bouton Pause
+btnPause.addEventListener('click', function() {
+    videoPlayer.btnPause();
+});
+
+
+// Ajoutez le bouton Pause au corps du document
+document.body.appendChild(btnPause);
+
+//bouton close
+let btnClose = document.createElement("btnClose");
+btnClose.textContent = "Fermer la vidéo";
+btnClose.classList.add("btnClose"); 
+document.body.appendChild(btnClose);
+
+
+
+        // JavaScript pour gérer les interactions
+  
+        const videoList = document.querySelector('.video-list');
+        const videoPlayer = document.querySelector('.video-player ');
+        const btnPlay = document.querySelector('.btnPause' );
+        const  btnPause = document.querySelector('.btnPause ');
+        const btnClose = document.querySelector('.btnClose');
+
+   // Création des éléments vidéo dans la liste
+
+   const videos = [
+    {
+        title: "Free woman",
+        poster: "jeune-femme-profitant-brise-ocean_23-2148943464.avif",
+        videoSource: "Femme.mp4",
+        author: {
+            name: "Free woman",
+        }
+    },
+    {
+        title: "Animaux Drôles",
+        poster: "Animaux.jpg",
+        videoSource: "chat.mp4",
+        author: {
+            name: "Animaux Drôles",
+        }
+    }
+];
+
+// Création des éléments vidéo dans la liste
+
+        videos.forEach(video => {
+            const videoDiv = document.createElement('div');
+            videoDiv.classList.add('video');
+            videoDiv.innerHTML = `
+                <img src="${video.poster}" alt="${video.title}">
+                <h2>${video.title}</h2>
+                <button class="play-button">Play</button>
+            `;
+            videoList.appendChild(videoDiv);
+        });
+// Gestion de l'événement de clic sur une vidéo
+videoList.addEventListener('click', (event) => {
+    if (event.target.classList.contains('play-button')) {
+        const videoTitle = event.target.parentElement.querySelector('h2').textContent;
+        const selectedVideo = videos.find(video => video.title === videoTitle);
+        videoPlayer.src = selectedVideo.videoSource;
+        document.querySelector('.video-player').classList.remove('hidden');
+    }
+});
+        // Gestion de l'événement de clic sur le bouton de fermeture
+
+
+        closeButton.addEventListener('click', () => {
+            document.querySelector('.video-player').classList.add('hidden');
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+        });
+
+        // Gestion de l'événement de clic sur la vidéo pour Play
+        videoPlayer.addEventListener('click', () => {
+        if (videoPlayer.paused) {
+        videoPlayer.btnPlay();
+        } else {
+        videoPlayer.btnPause();
+        }
+        });
+
+         // Gestion de l'événement de clic sur la vidéo pour Pause
+         videoPlayer.addEventListener('click', () => {
+        if (videoPlayer.paused) {
+        videoPlayer.btnPlay();
+        } else {
+        videoPlayer.btnPause();
+        }
+        });
+
+    // Récupération de l'élément fullscreen-button
+    const fullscreenButton = document.querySelector('.fullscreen-button');
+
+
+        // Gestion du bouton de basculement en mode plein écran
+        fullscreenButton.addEventListener('click', () => {
+    if (videoPlayer.requestFullscreen) {
+        videoPlayer.requestFullscreen();
+    } else if (videoPlayer.webkitRequestFullscreen) { /* Safari */
+        videoPlayer.webkitRequestFullscreen();
+    } else if (videoPlayer.msRequestFullscreen) { /* IE11 */
+        videoPlayer.msRequestFullscreen();
+    }
+});
+
+
+    // Ajoutez un gestionnaire d'événement pour la touche d'échappement (Esc)
+    document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        exitFullscreen();
+    }
+});
+
+ // Fonction pour quitter le mode plein écran
+ function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+    }
+}
+// BOUTONS Pl //
+
+btnPlay.onclick = function() {
+        videoPlayer.btnPlay();
+    }
+
+    btnPause.onclick = function() {
+        videoPlayer.btnPause();
+    }
+
+    // VOLUME DU CURSEUR D'ÉVÉNEMENT //
+// Récupération de l'élément du curseur de volume
+const volumeSlider = document.querySelector('.volume-slider');
+
+// Gestionnaire d'événement pour le curseur de volume
+volumeSlider.addEventListener('input', function() {
+    videoPlayer.volume = this.value / 100;
+    console.log("Volume : " + this.value);
+});
+
+// Gestionnaire d'événement pour le clic sur la vidéo pour Play/Pause
+videoPlayer.addEventListener('click', function() {
+    if (videoPlayer.paused) {
+        videoPlayer.btnplay();
+    } else {
+        videoPlayer.btnpause();
+    }
+});
+       
+
+    // VIDEO QUI SE REPETE AVEC LA FONCTION LOOP PUIS LA METTRE TRUE //
+    document.getElementById,videoList.loop =true;
+
+    </script>
+</body>
+</html>
